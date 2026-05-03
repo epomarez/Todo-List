@@ -1,2 +1,2 @@
-# js-webpack-template
-Starter template for new projects
+# Todo List
+A project focused on practicing clean code principles and working with JSON data
