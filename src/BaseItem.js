@@ -1,6 +1,7 @@
 export const BaseItem = class {
-    #title;
-    #description;
+    title;
+    description;
+    id;
     constructor({
         title = "(Empty)",
         description = "(Empty)"
