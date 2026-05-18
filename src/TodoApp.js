@@ -1,6 +1,6 @@
-import { ProjectItem } from "./ProjectItem";
-import { TodoItem } from "./TodoItem";
-import { CheckListItem } from "./CheckListItem";
+import { ProjectItem } from "./ProjectItem.js";
+import { TodoItem } from "./TodoItem.js";
+import { CheckListItem } from "./CheckListItem.js";
 
 export const TodoApp = {
     Projects: [],

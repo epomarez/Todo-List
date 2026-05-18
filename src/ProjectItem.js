@@ -1,5 +1,5 @@
-import { BaseItem } from './BaseItem';
-import { TodoItem } from './TodoItem';
+import { BaseItem } from './BaseItem.js';
+import { TodoItem } from './TodoItem.js';
 export const ProjectItem = class extends BaseItem {
 
     constructor({ title, description }) {

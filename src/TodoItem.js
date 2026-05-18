@@ -1,5 +1,5 @@
-import { BaseItem } from "./BaseItem";
-import { CheckListItem } from "./CheckListItem";
+import { BaseItem } from "./BaseItem.js";
+import { CheckListItem } from "./CheckListItem.js";
 
 export const TodoItem = class extends BaseItem {
 
