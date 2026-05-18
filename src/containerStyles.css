@@ -1,0 +1,77 @@
+:root {
+    --base-color: #d1d3d4;
+    --secondaryColor: #5469de;
+}
+
+#container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 94vh 6vh;
+}
+
+/*Project section*/
+
+#container>#projectSection {
+    background-color: var(--base-color);
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+}
+
+#projectList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-top: 10%;
+    padding-left: 10%;
+    font-size: small;
+}
+
+.projectElement {
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.projectElement:hover {
+    background-color: aliceblue;
+}
+
+/*Footer section*/
+
+footer {
+    grid-column: 1/3;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    background-color: var(--secondaryColor);
+    padding-bottom: 5px;
+}
+
+#container #projectButtons,
+#container #todosButtons {
+    grid-row: 2/3;
+    display: flex;
+    justify-content: center;
+
+}
+
+
+
+#container #projectButtons {
+    grid-column: 1/2;
+}
+
+#container #todosButtons {
+    grid-column: 2/3;
+}
+
+#projectButtons>button,
+#todosButtons>button {
+    background-color: var(--secondaryColor);
+    border: none;
+
+}
+
+#projectButtons>button:hover,
+#todosButtons>button:hover {
+    background-color: #d1d3d4;
+}
