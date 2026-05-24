@@ -2,15 +2,18 @@ import './containerStyles.css';
 import './templateStyles.css';
 import { TodoApp } from './TodoApp.js';
 import { ProjectItem } from './ProjectItem.js';
+import { TodoItem } from './TodoItem.js';
 const contentContainer = document.getElementById('container');
 const projectItemsContainer = document.getElementById('projectList');
+const todoItemsContainer = document.getElementById('todoList');
+let currentProjectId;
 
 const defaultProject = {
     title: "Start here",
     description: "This is your new project",
 }
 
-function addProjectElements(projects) {
+function renderProjectList(projects) {
     // The while loop purpose is to avoid duplication of 
     // dom elements
     while (projectItemsContainer.firstChild) {
@@ -22,16 +25,40 @@ function addProjectElements(projects) {
         const projectElement = document.createElement('h2');
         projectElement.setAttribute("class", "projectElement");
         projectElement.textContent = project.title;
+
+        projectElement.addEventListener('click', () => {
+            currentProjectId = project.id;
+            renderTodoList(project.getAllTodoItems());
+        });
+
         projectItemsContainer.appendChild(projectElement);
     });
 
 }
 
+function renderTodoList(todos) {
+    // The while loop purpose is to avoid duplication of 
+    // dom elements
+    while (todoItemsContainer.firstChild) {
+        todoItemsContainer.removeChild(todoItemsContainer.firstChild);
+    }
+
+    // Create an html element according to each stored project
+    todos.forEach(todo => {
+        const todoElement = document.createElement('h3');
+        todoElement.setAttribute("class", "todoElement");
+        todoElement.textContent = todo.title;
+        todoItemsContainer.appendChild(todoElement);
+    });
+}
+
 // This code runs every time the app is opened.
 function loadApp(isThereData) {
     if (!isThereData) {
-        TodoApp.addProject(new ProjectItem(defaultProject));
-        addProjectElements(TodoApp.getAllProjects());
+        const newProject = new ProjectItem(defaultProject);
+        currentProjectId = newProject.id;
+        TodoApp.addProject(newProject);
+        renderProjectList(TodoApp.getAllProjects());
     }
 }
 
@@ -48,10 +75,32 @@ addProjectBtn.addEventListener('click', () => {
         description: projectDescription,
     };
 
-    TodoApp.addProject(projectData);
-    addProjectElements(TodoApp.getAllProjects());
+    const newProject = new ProjectItem(projectData);
+    currentProjectId = newProject.id;
+    TodoApp.addProject(newProject);
+    renderProjectList(TodoApp.getAllProjects());
 });
 
+const addTodoBtn = document.getElementById("addTodo");
+addTodoBtn.addEventListener('click', () => {
+    const todoTitle = prompt("Add the todo's title");
+    const todoDescription = prompt("Add the todo's description");
+
+    const todoData = {
+        title: todoTitle,
+        description: todoDescription,
+    };
+
+    const currentProject = TodoApp.getAllProjects().find(
+        (project) => project.id === currentProjectId
+    );
+    console.log("antes");
+    console.log(currentProject);
+    console.log("despues");
+
+    currentProject.addTodoItem(new TodoItem(todoData));
+    renderTodoList(currentProject.getAllTodoItems());
+});
 //This is just for testing functionality
 loadApp(false);
 console.log(TodoApp.getAllProjects());
