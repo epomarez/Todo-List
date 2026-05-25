@@ -3,9 +3,11 @@ import './templateStyles.css';
 import { TodoApp } from './TodoApp.js';
 import { ProjectItem } from './ProjectItem.js';
 import { TodoItem } from './TodoItem.js';
+import { createProjectForm } from './createProjectForm.js';
 const contentContainer = document.getElementById('container');
 const projectItemsContainer = document.getElementById('projectList');
 const todoItemsContainer = document.getElementById('todoList');
+const subRightContainer = document.getElementById('subRightContainer');
 let currentProjectId;
 
 const defaultProject = {
@@ -62,23 +64,33 @@ function loadApp(isThereData) {
     }
 }
 
+// This adds or deletes certain html elements according to the selected button.
+function cleanAndAppend(container, content) {
+    container.removeChild(container.lastChild);
+    container.appendChild(content);
+}
+
 // This code add events to the buttons
 
 const addProjectBtn = document.getElementById("addProject");
 
 addProjectBtn.addEventListener('click', () => {
-    const projectTitle = prompt("Add the project's title");
-    const projectDescription = prompt("Add the project's description");
+    const existingForm =
+        subRightContainer.querySelector("#form-container");
+    const projectFormElement = createProjectForm(
+        (projectData) => {
+            const newProject = new ProjectItem(projectData);
+            currentProjectId = newProject.id;
+            TodoApp.addProject(newProject);
+            renderProjectList(TodoApp.getAllProjects());
+        }
+    )
+    if (existingForm) {
+        cleanAndAppend(subRightContainer, projectFormElement);
+    } else {
+        subRightContainer.appendChild(projectFormElement);
+    }
 
-    const projectData = {
-        title: projectTitle,
-        description: projectDescription,
-    };
-
-    const newProject = new ProjectItem(projectData);
-    currentProjectId = newProject.id;
-    TodoApp.addProject(newProject);
-    renderProjectList(TodoApp.getAllProjects());
 });
 
 const addTodoBtn = document.getElementById("addTodo");
@@ -94,9 +106,6 @@ addTodoBtn.addEventListener('click', () => {
     const currentProject = TodoApp.getAllProjects().find(
         (project) => project.id === currentProjectId
     );
-    console.log("antes");
-    console.log(currentProject);
-    console.log("despues");
 
     currentProject.addTodoItem(new TodoItem(todoData));
     renderTodoList(currentProject.getAllTodoItems());
