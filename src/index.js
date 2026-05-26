@@ -4,6 +4,7 @@ import { TodoApp } from './TodoApp.js';
 import { ProjectItem } from './ProjectItem.js';
 import { TodoItem } from './TodoItem.js';
 import { createProjectForm } from './createProjectForm.js';
+import { createTodoForm } from './createTodoForm.js';
 const contentContainer = document.getElementById('container');
 const projectItemsContainer = document.getElementById('projectList');
 const todoItemsContainer = document.getElementById('todoList');
@@ -95,20 +96,26 @@ addProjectBtn.addEventListener('click', () => {
 
 const addTodoBtn = document.getElementById("addTodo");
 addTodoBtn.addEventListener('click', () => {
-    const todoTitle = prompt("Add the todo's title");
-    const todoDescription = prompt("Add the todo's description");
+    const existingForm =
+        subRightContainer.querySelector("#form-container");
+    const todoFormElement = createTodoForm(
+        (todoData) => {
+            const newTodo = new TodoItem(todoData);
+            const currentProject = TodoApp.getAllProjects().find(
+                (project) => project.id === currentProjectId
+            );
 
-    const todoData = {
-        title: todoTitle,
-        description: todoDescription,
-    };
+            currentProject.addTodoItem(newTodo);
+            renderTodoList(currentProject.getAllTodoItems());
+        }
+    )
+    if (existingForm) {
+        cleanAndAppend(subRightContainer, todoFormElement);
+    } else {
+        subRightContainer.appendChild(todoFormElement);
+    }
 
-    const currentProject = TodoApp.getAllProjects().find(
-        (project) => project.id === currentProjectId
-    );
 
-    currentProject.addTodoItem(new TodoItem(todoData));
-    renderTodoList(currentProject.getAllTodoItems());
 });
 //This is just for testing functionality
 loadApp(false);

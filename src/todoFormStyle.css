@@ -1,0 +1,95 @@
+.todo-form-container {
+
+    padding: 24px;
+    background-color: white;
+
+    border-radius: 12px;
+
+    width: 100%;
+    max-width: 500px;
+}
+
+.todo-form {
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 1rem;
+}
+
+.form-group textarea {
+
+    resize: vertical;
+    min-height: 100px;
+}
+
+.checklist-section {
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.checklist-container {
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checklist-row {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checklist-row input[type="text"] {
+
+    flex-grow: 1;
+}
+
+.checklist-row button {
+
+    padding: 8px 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.todo-form-buttons {
+
+    display: flex;
+    gap: 12px;
+}
+
+.todo-form-buttons button,
+.checklist-section>button {
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
