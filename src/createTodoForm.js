@@ -8,6 +8,7 @@ export function createTodoForm(onSubmit, data = {}) {
     */
 
     const formContainer = document.createElement("div");
+    formContainer.id = "form-container";
     formContainer.classList.add("todo-form-container");
 
     const formTitle = document.createElement("h2");

@@ -54,42 +54,46 @@
     background-color: var(--todoListColor);
 }
 
-/*Footer section*/
+/*Buttons section*/
 
-footer {
-    grid-column: 1/3;
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    background-color: var(--secondaryColor);
-    padding-bottom: 5px;
-}
 
 #container #projectButtons,
 #container #todosButtons {
     grid-row: 2/3;
-    display: flex;
-    justify-content: center;
 
+    position: fixed;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
 }
 
 
 
 #container #projectButtons {
+    top: 85vh;
+    left: 1vw;
     grid-column: 1/2;
 }
 
 #container #todosButtons {
+    top: 93vh;
+    left: 1vw;
     grid-column: 2/3;
 }
 
 #projectButtons>button,
 #todosButtons>button {
-    background-color: var(--secondaryColor);
+    background-color: rgb(237, 130, 148);
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
     border: none;
 
 }
 
 #projectButtons>button:hover,
 #todosButtons>button:hover {
-    background-color: #d1d3d4;
+    background-color: var(--secondaryColor);
 }
