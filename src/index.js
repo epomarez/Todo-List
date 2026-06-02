@@ -5,10 +5,13 @@ import { ProjectItem } from './ProjectItem.js';
 import { TodoItem } from './TodoItem.js';
 import { createProjectForm } from './createProjectForm.js';
 import { createTodoForm } from './createTodoForm.js';
+import { createTodoCard } from './createTodoCard.js';
 const contentContainer = document.getElementById('container');
 const projectItemsContainer = document.getElementById('projectList');
 const todoItemsContainer = document.getElementById('todoList');
 const subRightContainer = document.getElementById('subRightContainer');
+const detailsPanel =
+    document.getElementById("detailsPanel");
 let currentProjectId;
 
 const defaultProject = {
@@ -30,6 +33,7 @@ function renderProjectList(projects) {
         projectElement.textContent = project.title;
 
         projectElement.addEventListener('click', () => {
+            detailsPanel.replaceChildren();
             currentProjectId = project.id;
             renderTodoList(project.getAllTodoItems());
         });
@@ -48,10 +52,39 @@ function renderTodoList(todos) {
 
     // Create an html element according to each stored project
     todos.forEach(todo => {
-        const todoElement = document.createElement('h3');
-        todoElement.setAttribute("class", "todoElement");
-        todoElement.textContent = todo.title;
-        todoItemsContainer.appendChild(todoElement);
+
+        const card = createTodoCard(todo, {
+
+            onToggle(todo) {
+                todo.toggleIsDone();
+                const project = TodoApp.getAllProjects().find((project) => project.id === currentProjectId);
+                renderTodoList(project.getAllTodoItems());
+            },
+
+            onDelete(todo, element) {
+                const project = TodoApp.getAllProjects().find((project) => project.id === currentProjectId);
+                project.removeTodoItem(todo.id);
+                renderTodoList(project.getAllTodoItems());
+            },
+
+            onSelect(todo) {
+                const form = createTodoForm(
+                    (updatedData) => {
+
+                        todo.update(updatedData);
+
+                        renderTodoList(
+                            currentProject.getAllTodoItems()
+                        );
+                    },
+                    todo
+                );
+
+                cleanAndAppend(detailsPanel, form);
+            },
+        });
+
+        todoItemsContainer.appendChild(card);
     });
 }
 
@@ -67,8 +100,7 @@ function loadApp(isThereData) {
 
 // This adds or deletes certain html elements according to the selected button.
 function cleanAndAppend(container, content) {
-    container.removeChild(container.lastChild);
-    container.appendChild(content);
+    container.replaceChildren(content);
 }
 
 // This code add events to the buttons
@@ -76,8 +108,6 @@ function cleanAndAppend(container, content) {
 const addProjectBtn = document.getElementById("addProject");
 
 addProjectBtn.addEventListener('click', () => {
-    const existingForm =
-        subRightContainer.querySelector("#form-container");
     const projectFormElement = createProjectForm(
         (projectData) => {
             const newProject = new ProjectItem(projectData);
@@ -86,11 +116,7 @@ addProjectBtn.addEventListener('click', () => {
             renderProjectList(TodoApp.getAllProjects());
         }
     )
-    if (existingForm) {
-        cleanAndAppend(subRightContainer, projectFormElement);
-    } else {
-        subRightContainer.appendChild(projectFormElement);
-    }
+    cleanAndAppend(detailsPanel, projectFormElement);
 
 });
 
@@ -110,9 +136,9 @@ addTodoBtn.addEventListener('click', () => {
         }
     )
     if (existingForm) {
-        cleanAndAppend(subRightContainer, todoFormElement);
+        cleanAndAppend(detailsPanel, todoFormElement);
     } else {
-        subRightContainer.appendChild(todoFormElement);
+        detailsPanel.appendChild(todoFormElement);
     }
 
 
