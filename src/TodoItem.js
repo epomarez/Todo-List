@@ -3,25 +3,21 @@ import { CheckListItem } from "./CheckListItem.js";
 
 export const TodoItem = class extends BaseItem {
 
-    #isDone = false;
-    #dueDate = "";
-    #priority = 0;
-    #notes = "";
-    #checkList = [];
-
     constructor({
         title,
         description,
         dueDate = null,
         priority = 1,
         notes,
-        checkList = []
+        checkList = [],
+        isDone = false
     }) {
         super({ title, description });
         this.dueDate = dueDate;
         this.priority = priority;
         this.notes = this._sanitizeText(notes);
         this.checkList = checkList;
+        this.isDone = isDone;
     }
 
     update(data) {
