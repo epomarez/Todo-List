@@ -59,12 +59,16 @@ function renderTodoList(todos) {
                 todo.toggleIsDone();
                 const project = TodoApp.getAllProjects().find((project) => project.id === currentProjectId);
                 renderTodoList(project.getAllTodoItems());
+                localStorage.clear();
+                localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
             },
 
             onDelete(todo, element) {
                 const project = TodoApp.getAllProjects().find((project) => project.id === currentProjectId);
                 project.removeTodoItem(todo.id);
                 renderTodoList(project.getAllTodoItems());
+                localStorage.clear();
+                localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
             },
 
             onSelect(todo) {
@@ -76,6 +80,8 @@ function renderTodoList(todos) {
                         renderTodoList(
                             currentProject.getAllTodoItems()
                         );
+                        localStorage.clear();
+                        localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
                     },
                     todo
                 );
@@ -95,6 +101,20 @@ function loadApp(isThereData) {
         currentProjectId = newProject.id;
         TodoApp.addProject(newProject);
         renderProjectList(TodoApp.getAllProjects());
+        localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
+    } else {
+        const projectList = JSON.parse(localStorage.getItem("projectList"));
+        projectList.forEach(project => {
+            const newProject = new ProjectItem(project);
+            project.todos.forEach(todoItem => {
+                newProject.addTodoItem(new TodoItem(todoItem));
+            })
+
+            TodoApp.addProject(newProject);
+            renderProjectList(TodoApp.getAllProjects());
+        }
+        )
+
     }
 }
 
@@ -111,9 +131,12 @@ addProjectBtn.addEventListener('click', () => {
     const projectFormElement = createProjectForm(
         (projectData) => {
             const newProject = new ProjectItem(projectData);
+
             currentProjectId = newProject.id;
             TodoApp.addProject(newProject);
             renderProjectList(TodoApp.getAllProjects());
+            localStorage.clear();
+            localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
         }
     )
     cleanAndAppend(detailsPanel, projectFormElement);
@@ -133,6 +156,8 @@ addTodoBtn.addEventListener('click', () => {
 
             currentProject.addTodoItem(newTodo);
             renderTodoList(currentProject.getAllTodoItems());
+            localStorage.clear();
+            localStorage.setItem("projectList", JSON.stringify(TodoApp.getAllProjects()));
         }
     )
     if (existingForm) {
@@ -144,5 +169,5 @@ addTodoBtn.addEventListener('click', () => {
 
 });
 //This is just for testing functionality
-loadApp(false);
+loadApp(localStorage.getItem("projectList"));
 console.log(TodoApp.getAllProjects());
